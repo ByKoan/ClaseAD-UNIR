@@ -3,6 +3,7 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBConnection {
 
@@ -11,7 +12,6 @@ public class DBConnection {
     public static Connection getConnection() {
 
         if (connection == null) {
-            // inicia la conexion
             createConnection();
         }
         return connection;
@@ -19,8 +19,12 @@ public class DBConnection {
 
     private static void createConnection() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/centro_escolar",
-                    "root", "unir_root");
+            String pass = System.getenv("DB_PASS");
+            String user = System.getenv("DB_USER");
+            String url = System.getenv("DB_URL");
+            connection = DriverManager.getConnection(url, user, pass);
+
+            // connection = DriverManager.getConnection("", new Properties())
         } catch (SQLException e) {
             System.out.println("Error de conexion");
             System.out.println(e.getMessage());
